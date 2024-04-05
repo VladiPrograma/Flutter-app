@@ -34,10 +34,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size=MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        appBar: AppBar(),
+    body: SingleChildScrollView(
+      physics: PageScrollPhysics(),
+      child: Container(
+        height: size.height,
+        width: size.width,
+        // padding: const EdgeInsets.all(15.0),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
@@ -128,6 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
         ),
       ),
+    )
     );
   }
 }

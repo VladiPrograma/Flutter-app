@@ -4,7 +4,9 @@ final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
   _initAuth();
-
+  _initActuation();
+LocalDatabase database=LocalDatabase.instance;
+database.database;
 
 
   // core
@@ -27,7 +29,7 @@ void _initAuth() {
         serviceLocator(),
       ),
     )
-    // Usecases
+    // Use cases
     ..registerFactory(
       () => UserSignUp(
         serviceLocator(),
@@ -52,5 +54,94 @@ void _initAuth() {
         appUserCubit: serviceLocator(),
       ),
     );
+
+
+}
+
+void _initActuation() {
+  // Datasource
+  serviceLocator
+  // Datasource
+    ..registerFactory<ActuationLocalDataSource>(
+          () => ActuationLocalDataSourceImpl(
+      ),
+    )..registerFactory<CommentLocalDataSource>(
+        () => CommentLocalDataSourceImpl(
+    ),
+  )..registerFactory<MediaLocalDataSource>(
+        () => MediaLocalDataSourceImpl(
+    ),
+  )
+  // Repository
+    ..registerFactory<ActuationRepository>(
+          () => ActuationRepositoryImpl(
+        serviceLocator(),
+      ),
+    )..registerFactory<CommentRepository>(
+        () => CommentRepositoryImpl(
+      serviceLocator(),
+    ),
+  )..registerFactory<MediaRepository>(
+        () => MediaRepositoryImpl(
+      serviceLocator(),
+    ),
+  )
+  // Usecases
+    ..registerFactory(
+          () => CreateActuation(
+        serviceLocator(),
+      ),
+    )..registerFactory(
+        () => UpdateActuation(
+      serviceLocator(),
+    ),
+  )..registerFactory(
+        () => GetAllActuation(
+      serviceLocator(),
+    ),
+  )..registerFactory(
+        () => DeleteActuation(
+      serviceLocator(),
+    ),
+  )
+
+
+    ..registerFactory(
+          () => CreateComment(
+        serviceLocator(),
+      ),
+    )..registerFactory(
+        () => UpdateComment(
+      serviceLocator(),
+    ),
+  )..registerFactory(
+        () => GetAllComments(
+      serviceLocator(),
+    ),
+  )..registerFactory(
+        () => DeleteComment(
+      serviceLocator(),
+    ),
+  )
+    ..registerFactory(
+          () => CreateMedia(
+        serviceLocator(),
+      ),
+    )..registerFactory(
+        () => UpdateMedia(
+      serviceLocator(),
+    ),
+  )..registerFactory(
+        () => GetAllMedias(
+      serviceLocator(),
+    ),
+  )..registerFactory(
+        () => DeleteMedia(
+      serviceLocator(),
+    ),
+  )
+
+      ;
+
 }
 

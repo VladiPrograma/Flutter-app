@@ -53,7 +53,7 @@ class ConnectionStatusListener {
 updateConnectivity(
   dynamic hasConnection,
   ConnectionStatusListener connectionStatus,
-) {
+) {print("updating the network state");
   if (!hasConnection) {
     connectionStatus.hasShownNoInternet = true;
     Navigator.of(NavigationService.navigatorKey.currentContext!).push(
