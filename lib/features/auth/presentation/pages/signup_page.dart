@@ -38,11 +38,10 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
         appBar: AppBar(),
     body: SingleChildScrollView(
-      physics: PageScrollPhysics(),
       child: Container(
         height: size.height,
         width: size.width,
-        // padding: const EdgeInsets.all(15.0),
+         padding: const EdgeInsets.all(15.0),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
