@@ -4,6 +4,6 @@ class Assets {
 
   static const String assetsIcLauncher = 'assets/ic_launcher.png';
   static const String assetsNoInternet = 'assets/no_internet.png';
-  static const String ciceroAppAssetsNoInternet = 'assets/no_internet.png';
+  static const String flutterAppAssetsNoInternet = 'assets/no_internet.png';
 
 }

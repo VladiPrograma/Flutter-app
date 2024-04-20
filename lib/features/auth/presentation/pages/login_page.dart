@@ -1,3 +1,5 @@
+
+import '../../../actuation/presentation/new_video_screen.dart';
 import '/core/common/widgets/loader.dart';
 import '/core/theme/app_pallete.dart';
 import '/core/utils/show_snackbar.dart';
@@ -79,7 +81,11 @@ class _LoginPageState extends State<LoginPage> {
                   AuthGradientButton(
                     buttonText: 'Sign in',
                     onPressed: () {
+                      Navigator.push(context, NewCameraScreen.route());
+
                       if (formKey.currentState!.validate()) {
+                        Navigator.push(context, SignUpPage.route());
+
                         context.read<AuthBloc>().add(
                               AuthLogin(
                                 email: emailController.text.trim(),

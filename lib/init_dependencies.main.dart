@@ -3,6 +3,7 @@ part of 'init_dependencies.dart';
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
+
   _initAuth();
   _initActuation();
 LocalDatabase database=LocalDatabase.instance;
@@ -58,7 +59,9 @@ void _initAuth() {
 
 }
 
-void _initActuation() {
+void _initActuation() async{
+  List<CameraDescription> camerasList= await availableCameras();
+
   // Datasource
   serviceLocator
   // Datasource
@@ -141,7 +144,13 @@ void _initActuation() {
     ),
   )
 
-      ;
+  // Bloc
+  ..registerLazySingleton(
+  () => CameraBloc(cameras: camerasList
+
+  ),
+  )
+  ;
 
 }
 

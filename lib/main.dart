@@ -1,4 +1,5 @@
 import 'package:cicero_app/core/utils/navigation_service.dart';
+import 'package:cicero_app/features/actuation/presentation/bloc/actuation_bloc.dart';
 import 'package:cicero_app/features/splash_screen.dart';
 
 import '/core/common/cubits/app_user/app_user_cubit.dart';
@@ -7,6 +8,7 @@ import '/features/auth/presentation/bloc/auth_bloc.dart';
 import '/init_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart' as sizer;
 
 
 void main() async {
@@ -18,16 +20,26 @@ void main() async {
       ),
       BlocProvider(
         create: (_) => serviceLocator<AuthBloc>(),
+      ),  BlocProvider(
+        create: (_) => serviceLocator<CameraBloc>(),
       ),
 
     ],
-    child:MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: NavigationService.navigatorKey,
-        title: 'Cicero App',
-        theme: AppTheme.darkThemeMode,
-        home: const SplashScreen()
-    ),
+    child:
+    sizer.Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              navigatorKey: NavigationService.navigatorKey,
+              title: 'Cicero App',
+              theme: AppTheme.darkThemeMode,
+              home: const SplashScreen()
+          );
+        }
+    )
+
+
+
   ));
 }
 
