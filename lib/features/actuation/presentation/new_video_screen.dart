@@ -41,6 +41,12 @@ class _NewCameraScreenState extends State<NewCameraScreen>
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 
+
+  @override
+  void didChangeMetrics() {
+    MyScreenUtils.setScreenUtils(MediaQuery.of(context));
+  }
+
   double _getAspectRatio(CameraController controller) {
     double aspectRatio = controller.value.aspectRatio;
     if (controller.value.isRecordingVideo) {
@@ -109,14 +115,16 @@ class _NewCameraScreenState extends State<NewCameraScreen>
                     children: [
                        const CameraTopBarWidget(),
                       //You cam fill the data here
-                      const  SizedBox(height: 50,),
+                      const  SizedBox(height:40,),
                       Center(
                         child: SizedBox(
                           width: MyScreenUtils.width,
-                          height: MyScreenUtils.height- (MyScreenUtils.orientation==Orientation.portrait? 200:170),
+                          height: MyScreenUtils.height- (MyScreenUtils.orientation==Orientation.portrait? 180:130),
                           child: AspectRatio(
                             aspectRatio: _getAspectRatio(state.cameraController),
-                            child: CameraPreview(
+                            child:
+                            !state.cameraController.value.isInitialized?Container():
+                            CameraPreview(
                               state.cameraController,
                               child: LayoutBuilder(builder: (BuildContext context,
                                   BoxConstraints constraints) {
@@ -136,7 +144,7 @@ class _NewCameraScreenState extends State<NewCameraScreen>
                       ),
                       //You cam fill the data here
 
-                      const SizedBox(height: 50,),
+                      const SizedBox(height: 40,),
 
                     ],
                   ),
