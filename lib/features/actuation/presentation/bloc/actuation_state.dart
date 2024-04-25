@@ -16,6 +16,11 @@ final class CameraInitial extends ActuationState{
 
   CameraInitial(this.cameraStatusModel);
 }
+final class SwitchingCamera extends ActuationState{
+  final CameraStatusModel cameraStatusModel;
+
+  SwitchingCamera(this.cameraStatusModel);
+}
 
 final class CameraInitialize extends ActuationState{
   final CameraStatusModel cameraStatusModel;
@@ -29,6 +34,11 @@ final class CameraState extends ActuationState{
   final CameraController cameraController;
 
   CameraState({required this.cameraStatusModel,required this.cameraController, });
+}
+
+final class ActuationSaveState extends CameraState{
+  ActuationSaveState({required super.cameraStatusModel, required super.cameraController});
+
 }
 
 

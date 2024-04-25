@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:cicero_app/core/utils/camera_utils.dart';
+import 'package:cicero_app/core/utils/custom_loading_widget.dart';
 import 'package:cicero_app/core/utils/my_screen_utils.dart';
 import 'package:cicero_app/features/actuation/data/models/camera_status_model.dart';
 import 'package:cicero_app/features/actuation/presentation/bloc/actuation_bloc.dart';
@@ -103,6 +103,8 @@ class _NewCameraScreenState extends State<NewCameraScreen>
             return  Center(
               child: Text(state.error),
             );
+          }else if(state is SwitchingCamera){
+            return Container();
           }
           CameraStatusModel cameraStatusModel =
               (state as CameraState).cameraStatusModel;
@@ -139,6 +141,7 @@ class _NewCameraScreenState extends State<NewCameraScreen>
                                 );
                               }),
                             ),
+
                           ),
                         ),
                       ),
@@ -205,6 +208,8 @@ class _NewCameraScreenState extends State<NewCameraScreen>
                       ],
                     ),
                   ),
+
+                  state is ActuationSaveState?const CustomLoadingWidget():const SizedBox.shrink(),
                 ],
               ));
         },

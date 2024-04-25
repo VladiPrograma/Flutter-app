@@ -33,7 +33,6 @@ class CameraBloc extends Bloc<CameraEvent, ActuationState> {
     on<InitializeCamera>(_initializeCamera);
     on<StartRecordingEvent>(_startRecordingButtonClickedEvent);
     on<StopRecordingEvent>(_stopRecordingEvent);
-    on<SwitchCameraDuringRecordingEvent>(_switchCameraDuringRecordingEvent);
     on<CameraZoomEvent>(_cameraZoomEvent);
     on<CameraExposureEvent>(_cameraExposureEvent);
     on<SwitchCameraEvent>(_switchCameraEvent);
@@ -54,30 +53,29 @@ class CameraBloc extends Bloc<CameraEvent, ActuationState> {
   }
 
   Future<void> onNewCameraSelected() async {
-    final previousCameraController = cameraController;
 
-     cameraController = CameraController(
+      cameraController = CameraController(
       cameras[cameraStatusModel.isRearCameraSelected?0:1],
       ResolutionPreset.high,
-      imageFormatGroup: ImageFormatGroup.jpeg,
     );
     resetCameraValues();
       await cameraController?.initialize();
-      await Future.wait([
-        cameraController
+
+    await Future.wait([
+      cameraController
             !.getMinExposureOffset()
             .then((value) => cameraStatusModel.minAvailableExposureOffset = value),
-        cameraController
+      cameraController
         !.getMaxExposureOffset()
             .then((value) => cameraStatusModel.maxAvailableExposureOffset = value),
-        cameraController
+      cameraController
         !.getMaxZoomLevel()
             .then((value) => cameraStatusModel.maxAvailableZoom = value),
-        cameraController
+      cameraController
         !.getMinZoomLevel()
             .then((value) => cameraStatusModel.minAvailableZoom = value),
       ]);
-    // await previousCameraController?.dispose();
+
 
 
   }
@@ -127,12 +125,10 @@ class CameraBloc extends Bloc<CameraEvent, ActuationState> {
 _timer?.cancel();
       try {
         XFile file = await cameraController!.stopVideoRecording();
-        await CameraUtils.saveVideo(file);
         cameraStatusModel.isRecording=false;
         _miliseconds=0;
         allFileList.add(file.path);
-        // CameraUtils.rotateVideo(allFileList.last, cameraStatusModel.isRearCameraSelected);
-
+emit(ActuationSaveState(cameraStatusModel: cameraStatusModel, cameraController: cameraController!));
         await CameraUtils.mergeVideos(allFileList);
         allFileList.clear();
         emit(CameraState(cameraStatusModel: cameraStatusModel, cameraController: cameraController!));
@@ -144,9 +140,7 @@ _timer?.cancel();
 
   }
 
-  FutureOr<void> _switchCameraDuringRecordingEvent(
-      SwitchCameraDuringRecordingEvent event,
-      Emitter<ActuationState> emit) async {}
+
 
   FutureOr<void> _cameraZoomEvent(
       CameraZoomEvent event, Emitter<ActuationState> emit) async {
@@ -167,19 +161,26 @@ _timer?.cancel();
 
   FutureOr<void> _switchCameraEvent(
       SwitchCameraEvent event, Emitter<ActuationState> emit) async {
-
     try {
+      cameraStatusModel.isRearCameraSelected=!cameraStatusModel.isRearCameraSelected;
+
       if(cameraStatusModel.isRecording && (cameraController!.value.isRecordingVideo||cameraController!.value.isRecordingPaused)){
       final recFile=await cameraController!.stopVideoRecording();
       allFileList.add(recFile.path);
-      // CameraUtils.rotateVideo(allFileList.last, cameraStatusModel.isRearCameraSelected);
+      // emit(SwitchingCamera(cameraStatusModel));
+      // await cameraController?.dispose();
+      //
+      //  await onNewCameraSelected();
+      await cameraController?.setDescription(cameras[cameraStatusModel.isRearCameraSelected?0:1]);
+      // emit(CameraState(cameraStatusModel: cameraStatusModel, cameraController: cameraController!));
+      await cameraController?.startVideoRecording();
+      }else{
+        await cameraController?.setDescription(cameras[cameraStatusModel.isRearCameraSelected?0:1]);
+
+        // await onNewCameraSelected();
+        // emit(CameraState(cameraStatusModel: cameraStatusModel, cameraController: cameraController!));
 
       }
-      cameraStatusModel.isRearCameraSelected=!cameraStatusModel.isRearCameraSelected;
-      await onNewCameraSelected();
-      await cameraController!.lockCaptureOrientation();
-      await cameraController!.startVideoRecording();
-       emit(CameraState(cameraStatusModel: cameraStatusModel, cameraController: cameraController!));
     } on Exception catch (e) {
       print("Change Camera error: $e");
       emit(CameraFailure("Change Camera error: $e"));

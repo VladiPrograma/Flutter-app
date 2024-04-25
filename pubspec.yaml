@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: '>=3.3.4 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -59,6 +59,11 @@ dependencies:
   fpdart: ^1.1.0
   image_picker: ^1.0.7
   flutter_ffmpeg: ^0.4.2
+  loading_animation_widget: ^1.2.1
+
+
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -72,10 +77,6 @@ dev_dependencies:
   mocktail: ^1.0.3
   build_runner: ^2.4.8
   json_serializable: ^6.7.1
-  integration_test:
-    sdk: flutter
-
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
