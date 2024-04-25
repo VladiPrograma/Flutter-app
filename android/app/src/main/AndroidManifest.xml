@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
 
     <application
-        android:label="cicero_app"
+        android:label="Cicero App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
